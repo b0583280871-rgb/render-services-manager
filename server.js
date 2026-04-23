@@ -1,8 +1,25 @@
-import renderApi from 'rnd_VMWcqxBusc2etNXB4TS8oSUxzAZy'
-import express from 'express';
+import express from "express";
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+const API_KEY = process.env.RENDER_API_KEY; // תגדירי כמשתנה סביבה ב-Render
 
-renderApi.auth('rnd_VMWcqxBusc2etNXB4TS8oSUxzAZy');
-renderApi.listServices({includePreviews: 'true', limit: '20'})
-  .then(({ data }) => console.log(data))
-  .catch(err => console.error(err));
+app.get("/services", async (req, res) => {
+  try {
+    const response = await fetch("https://api.render.com/v1/services?limit=20", {
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+        Accept: "application/json",
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
