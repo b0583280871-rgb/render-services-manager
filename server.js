@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.RENDER_API_KEY; // תגדירי כמשתנה סביבה ב-Render
 
-app.get("/", async (req, res) => {
+app.get("/server", async (req, res) => {
   try {
     const response = await fetch("https://api.render.com/v1/services?limit=20", {
       headers: {
